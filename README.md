@@ -1,64 +1,102 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Four in line - AAT
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+The game for in line, made in PHP using the framework **Laravel**. In this game there are two players, one red and one blue, they alternate placing pieces on the board. The winner is the first to make a line of four pieces of their colour.
 
-## About Laravel
+<br/>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirements
+To run this proyect three different aplications are needed:
+- Docker (https://docs.docker.com/desktop/)
+- DDEV (https://ddev.readthedocs.io/en/stable/)
+- Composer (https://getcomposer.org/download/)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<br/>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Running the project
+Actually running this proyect requires a number of steps, all these asume that the software in the requirements is installed and working.
 
-## Learning Laravel
+## Getting the proyect
+To get the proyect run ``git clone https://github.com/Tinch334/cuatroenlinea``.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<br/>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Creating an environment(Conteiner creation)
+To configure the project we run:
+>``ddev config``
 
-## Laravel Sponsors
+When we do this a series of prompts will appear. First ``proyect name``, leave this field empty and simply press enter, this will use the name of the folder.  Next ``docroot location ``, again don't enter anything and press enter. Finally when asked the type of project enter ``laravel``.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+When the configuation is done it should give you a url that looks something like ``https://cuatroenlinea-master.ddev.site``. Try going to it and check if it works, if so great! Otherwise continue reading.
 
-### Premium Partners
+<br/>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Configuration problems
+If the above page didn't work you probably got a message similar to:
 
-## Contributing
+![Page not working example](https://cdn.discordapp.com/attachments/982774069663531021/982774389940564049/Screenshot_page_not_working.png)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Keep in mind that not all error messages will look the same, this is just an example. If you got an error message of any kind you will have to perform a few more steps to get the proyect to work.
 
-## Code of Conduct
+### Composer
+The first thing to do if you are having trouble is update your dependencies. In the case of PHP we are using ``Composer``.  To update all packages run:
+> ``composer update``
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+When you run this is very likely you'll have some erros, they can take many forms, but most commonly they look something like this:
+> ``Your requirements could not be resolved to an installable set of packages.``
+> ``The requested PHP extension dom is missing from your system.``
 
-## Security Vulnerabilities
+In this case the error can most often be solved by running:
+> ``sudo apt-get install php-xml``
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+This should install al missing packages and allow composer to work poperly. If you still encounter an error however, particullarly one that says:
+> ``The requested PHP extension curl is missing from your system``
 
-## License
+Then you will have to also update ``php-curl`` to do this you first need your version of PHP, to get it run:
+> ``php -v``
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The first line should look somehing like this ``PHP 7.4.3 (cli) (built: Mar  2 2022 15:36:52) ( NTS )`` The numbers you see after PHP are your version. Once you have it run:
+``sudo apt-get install <php-version>-curl``
+
+This will install the appropiate curl version needed for your version, it's very important that you do not install the wrong one as it can cause conflicts.
+
+###  Checking composer
+After doing all this composer should now work, to check we again run:
+> ``composer update``
+
+If everything is working correctly then you sould see no errors and get a message that looks something like this ``Package manifest generated successfully. 77 packages you are using are looking for funding.``
+
+This means that all dependencies were succesfully updated and we are ready to start our page.
+
+<br/>
+
+## Running the project
+Now that everything is ready we can run the project to do this we execute:
+> ``ddev start``
+
+Doing so will give you a URL, if you followed all the steps it should be ``https://cuatroenlinea-master.ddev.site``
+
+### Encryption key
+When you go to that link you will se a message like this:
+![Encryption key problem](https://cdn.discordapp.com/attachments/982774069663531021/982774389672124477/Screenshot_key_missing.png)
+ On the page below that message you will see a button to generate the necessary encryption key, press it.
+
+### Page works
+After doing that you can refresh the page and it should work, showing you the following.
+![Working page](https://cdn.discordapp.com/attachments/982774069663531021/982774389319827536/Screenshot_works.png)
+
+If you see this page it means that everything works properly.
+
+### Checking the game
+To make shure the game works go to the URL ``https://cuatroenlinea-master.ddev.site/jugar/1``, beware it can take some time to load.
+
+If the game is working as intended then you should see the board with a single red piece at the bottom left. If you see that, ot means that the game works correctly and you can be happy.
+![Working game](https://cdn.discordapp.com/attachments/982774069663531021/982779372488523786/Screenshot_game.png)
+
+<br/>
+
+## Shutting down the project
+It's a bad idea to shut down the project by simply terminating the process or closing the console in which it's running. This is beacuse killing the process doesn't terminate all the things created by ddev to run the page (containers, virtual networks, etc).
+To properly shut down the project run:
+> ``ddev stop``
+
+After stopping the process you should see the line ``Project cuatroenlinea-master has been stopped.``. This means everything was shut down properly.
