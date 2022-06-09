@@ -43,6 +43,7 @@ The first thing to do if you are having trouble is update your dependencies. In 
 
 When you run this is very likely you'll have some erros, they can take many forms, but most commonly they look something like this:
 > ``Your requirements could not be resolved to an installable set of packages.``
+
 > ``The requested PHP extension dom is missing from your system.``
 
 In this case the error can most often be solved by running:
@@ -51,7 +52,7 @@ In this case the error can most often be solved by running:
 This should install al missing packages and allow composer to work poperly. If you still encounter an error however, particullarly one that says:
 > ``The requested PHP extension curl is missing from your system``
 
-Then you will have to also update ``php-curl`` to do this you first need your version of PHP, to get it run:
+Then you will have to also update ``php-curl``, to do this you first need your version of PHP, to get it run:
 > ``php -v``
 
 The first line should look somehing like this ``PHP 7.4.3 (cli) (built: Mar  2 2022 15:36:52) ( NTS )`` The numbers you see after PHP are your version. Once you have it run:
@@ -63,7 +64,7 @@ This will install the appropiate curl version needed for your version, it's very
 After doing all this composer should now work, to check we again run:
 > ``composer update``
 
-If everything is working correctly then you sould see no errors and get a message that looks something like this ``Package manifest generated successfully. 77 packages you are using are looking for funding.``
+If everything is working correctly then you sould see no errors and get a message that looks something like this: ``Package manifest generated successfully. 77 packages you are using are looking for funding.``
 
 This means that all dependencies were succesfully updated and we are ready to start our page.
 
@@ -73,11 +74,12 @@ This means that all dependencies were succesfully updated and we are ready to st
 Now that everything is ready we can run the project to do this we execute:
 > ``ddev start``
 
-Doing so will give you a URL, if you followed all the steps it should be ``https://cuatroenlinea-master.ddev.site``
+Doing so will give you a URL, if you followed all the steps it should be: ``https://cuatroenlinea-master.ddev.site``
 
 ### Encryption key
 When you go to that link you will se a message like this:
 ![Encryption key problem](https://cdn.discordapp.com/attachments/982774069663531021/982774389672124477/Screenshot_key_missing.png)
+
  On the page below that message you will see a button to generate the necessary encryption key, press it.
 
 ### Page works
