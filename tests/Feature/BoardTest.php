@@ -15,7 +15,7 @@ class BoardTest extends TestCase
     public function test_empty_board() {
         $response = $this->get('/jugar/');
 
-        $this->assertStatus(200);
+        $response->assertStatus(200);
     }
 
     /**
@@ -26,6 +26,6 @@ class BoardTest extends TestCase
     public function test_invalid_column() {
         $response = $this->get('/jugar/8');
 
-        $this->assertStatus(200);
+        $response->assertStatus(200);
     }
 }
