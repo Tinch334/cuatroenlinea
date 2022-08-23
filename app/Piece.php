@@ -2,6 +2,12 @@
 namespace App;
 
 
+interface PieceInterface {
+    public function getColourInt(): int;
+    public function getColourHex(): number;
+}
+
+
 class Piece implements PieceInterface {
     protected int $colour; //A 0 means red, a 1 means blue.
     protected number $redColour;

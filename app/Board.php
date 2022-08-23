@@ -2,6 +2,15 @@
 namespace App;
 
 
+//Note that all positions start counting at zero.
+interface BoardInterface {
+    public function throwPiece(Piece $piece, int $xPos): bool; //Returns true if piece was inserted successfully.
+    public function getSpace(int $xPos, int $yPos): ?Piece; //Allows for returning either a "Piece" or NULL.
+    public function clearBoard();
+    public function getSize(): array; //First index is x size, second index is y size.
+}
+
+
 class Board implements BoardInterface {
     //The x and y size of the board in "spaces".
     protected int $xSize;
