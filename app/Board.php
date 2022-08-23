@@ -20,11 +20,11 @@ class Board implements BoardInterface {
     //The constructor uses the predetermined board size by default.
     function __construct(int $xSize = 7, int $ySize = 6) {
         if ($xSize < 0) {
-            throw new Exception("Invalid size used for board width, with value: ".$xSize);
+            throw new \Exception("Invalid size used for board width, with value: ".$xSize);
             $this->xSize = 7 //In case of an exception we default to the predetermined board size.
         }
         if ($ySize < 0) {
-            throw new Exception("Invalid size used for board height, with value: ".$ySize);
+            throw new \Exception("Invalid size used for board height, with value: ".$ySize);
             $this->xSize = 6 //In case of an exception we default to the predetermined board size.
         }
 
@@ -37,8 +37,8 @@ class Board implements BoardInterface {
 
     public function throwPiece(Piece $piece, int $xPos): bool{
         if ($xPos < 0 || $xPos > $this->xSize)
-            throw new Exception("Invalid column position, with value: ".$xPos);
-            return; //Exception
+            throw new \Exception("Invalid column position, with value: ".$xPos);
+            return;
 
         //We've reached the top of this column.
         if (count($this->board[$xPos]) >= $this->ySize) {
@@ -53,7 +53,7 @@ class Board implements BoardInterface {
     public function getSpace(int $xPos, int $yPos): ?Piece {
         //Make sure position is within board bounds.
         if ($xPos > $this->xSize || $xPos < 0 || $yPos > $this->ySize || $ypos < 0)
-            throw new Exception("Invalid row and column position, with values. X: ".$xPos" - Y: ".$yPos);
+            throw new \Exception("Invalid row and column position, with values. X: ".$xPos" - Y: ".$yPos);
             return;
 
         //Since the board is cleared on the constructor we won't have uninitialized indexes, therefore we can return safely. 

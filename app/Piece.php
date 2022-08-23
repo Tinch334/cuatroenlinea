@@ -15,7 +15,7 @@ class Piece implements PieceInterface {
 
     function __construct(int $pieceColour, number $redColour = 0xdb0909, number $blueColour = 0x132af2) {
         if ($pieceColour < 0 && $pieceColour > 1) {
-            throw new Exception("Invalid colour used when initializing piece, with value: ".$pieceColour);
+            throw new \Exception("Invalid colour used when initializing piece, with value: ".$pieceColour);
             $this->colour = 0 //In case of an exception we default to red.
 
             return;
