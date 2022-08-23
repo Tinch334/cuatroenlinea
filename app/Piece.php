@@ -15,7 +15,8 @@ class Piece implements PieceInterface {
 
     function __construct(int $pieceColour, number $redColour = 0xdb0909, number $blueColour = 0x132af2) {
         if ($pieceColour < 0 && $pieceColour > 1) {
-            //Exception
+            throw new Exception("Invalid colour used when initializing piece, with value: ".$pieceColour);
+            $this->colour = 0 //In case of an exception we default to red.
 
             return;
         }
@@ -25,11 +26,9 @@ class Piece implements PieceInterface {
         $this->blueColour = $blueColour;
     }
 
-
     public function getColourInt(): int {
         return $this->colour;
     }
-
 
     public function getColourHex(): number {
         if ($this->colour == 0) {

@@ -17,26 +17,27 @@ class Board implements BoardInterface {
     protected int $ySize;
     protected array $board;
 
-    function __construct(int $xSize, int $ySize) {
+    //The constructor uses the predetermined board size by default.
+    function __construct(int $xSize = 7, int $ySize = 6) {
         if ($xSize < 0) {
-            //Exception
-
-            return;
+            throw new Exception("Invalid size used for board width, with value: ".$xSize);
+            $this->xSize = 7 //In case of an exception we default to the predetermined board size.
         }
         if ($ySize < 0) {
-            //Exception
-
-            return;
+            throw new Exception("Invalid size used for board height, with value: ".$ySize);
+            $this->xSize = 6 //In case of an exception we default to the predetermined board size.
         }
 
         $this->xSize = $xSize;
         $this->ySize = $ySize;
 
+        //Initializes all board spaces with "NULL".
         $this->clearBoard();
     }
 
     public function throwPiece(Piece $piece, int $xPos): bool{
-        if ($xPos > $this->xSize)
+        if ($xPos < 0 || $xPos > $this->xSize)
+            throw new Exception("Invalid column position, with value: ".$xPos);
             return; //Exception
 
         //We've reached the top of this column.
@@ -47,13 +48,13 @@ class Board implements BoardInterface {
         //Add piece to the end of the corresponding column.
         $this->board[$xpos][] = $piece;
         return true;
-
-        return false;
     }
 
     public function getSpace(int $xPos, int $yPos): ?Piece {
+        //Make sure position is within board bounds.
         if ($xPos > $this->xSize || $xPos < 0 || $yPos > $this->ySize || $ypos < 0)
-            return; //Exception
+            throw new Exception("Invalid row and column position, with values. X: ".$xPos" - Y: ".$yPos);
+            return;
 
         //Since the board is cleared on the constructor we won't have uninitialized indexes, therefore we can return safely. 
         return $this->board[$xPos][$yPos];
