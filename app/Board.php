@@ -1,6 +1,9 @@
 <?php
 namespace App;
 
+use App\Piece;
+use App\DetectWin;
+
 
 //Note that all positions start counting at zero.
 interface BoardInterface {
@@ -40,19 +43,21 @@ class Board implements BoardInterface {
         if ($xPos < 0 || $xPos > $this->xSize)
             throw new \Exception("Invalid column position, with value: ".$xPos);
 
-        //We've reached the top of this column.
-        if (count($this->board[$xPos]) >= $this->ySize) {
-            return false;
+        //Add piece to the end of the corresponding column, by checking upwards until we find an empty space.
+        for ($y = 0; $y < $this->ySize; $y++) {
+            if ($this->board[$xPos][$y] == NULL) {
+                $this->board[$xPos][$y] = $piece;
+                return true;
+            }
         }
 
-        //Add piece to the end of the corresponding column.
-        $this->board[$xpos][] = $piece;
-        return true;
+        //If no empty space was found that means we have reached the top of the column.
+        return false;
     }
 
     public function getSpace(int $xPos, int $yPos): ?Piece {
         //Make sure position is within board bounds.
-        if ($xPos > $this->xSize || $xPos < 0 || $yPos > $this->ySize || $ypos < 0)
+        if ($xPos > $this->xSize || $xPos < 0 || $yPos > $this->ySize || $yPos < 0)
             throw new \Exception("Invalid row and column position, with values. X: ".$xPos." - Y: ".$yPos);
 
         //Since the board is cleared on the constructor we won't have uninitialized indexes, therefore we can return safely. 
