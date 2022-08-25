@@ -15,7 +15,7 @@ $detectWin = new DetectWin();
 $bluePiece = new Piece(0, -1, -1);
 
 for ($i = 0; $i < 4; $i++) { 
-    $board->throwPiece($bluePiece, $i);
+    $board->throwPiece($bluePiece, 3);
 }
 
 if ($detectWin->detectWin($board) == NULL)
