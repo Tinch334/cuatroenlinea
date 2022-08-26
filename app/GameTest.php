@@ -15,23 +15,23 @@ $detectWin = new DetectWin();
 $redPiece = new Piece(0, -1, -1);
 $bluePiece = new Piece(1, -1, -1);
 
+$board->throwPiece($bluePiece, 0);
+$board->throwPiece($bluePiece, 0);
+$board->throwPiece($bluePiece, 0);
+$board->throwPiece($redPiece, 0);
 
-//Create a diagonal line of red pieces starting at the bottom left.
-for ($x = 0; $x < 3; $x++) {
-    for ($i = 0; $i <= $x; $i++) {
+for ($x = 1; $x < 4; $x++) {
+    for ($i = 0; $i < 4 - $x; $i++) {
         $board->throwPiece($redPiece, $x);
     }
 }
 
-$board->throwPiece($bluePiece, 3);
-$board->throwPiece($bluePiece, 3);
-$board->throwPiece($bluePiece, 3);
-$board->throwPiece($redPiece, 3);
+$board->printBoard();
 
 if ($detectWin->detectWin($board) == NULL)
-    echo "No win";
+    echo "\nNo win";
 else
-    echo "Win";
+    echo "\nWin";
 
 echo "\n\n";
 

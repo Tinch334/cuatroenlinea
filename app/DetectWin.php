@@ -63,7 +63,7 @@ class DetectWin implements DetectWinInterface {
         //Uses the same logic as the horizontal win check.
         $matchCount = 0; //Reset match count.
 
-        for ($yCount = $y; $yCount < min($y + ($winCount - 1), $this->board->getSizeY()); $yCount++) { 
+        for ($yCount = $y; $yCount < min($y + ($winCount - 1), $this->board->getSizeY()); $yCount++) {
             if ($this->pieceCheck($this->board->getSpace($x, $yCount), $pieceColour))
                 $matchCount++;
             else
@@ -78,10 +78,11 @@ class DetectWin implements DetectWinInterface {
                 break;
         }
 
-        if ($matchCount >= $winCount)
+        if ($matchCount >= $winCount) {
             return true;
+        }
 
-        //DIAGONAL WIN CHECK
+        //DIAGONAL WIN CHECK RIGHT
         $matchCount = 0; //Reset match count.
 
         for ($count = 0; $count < $winCount && $x + $count < $this->board->getSizeX() && $y + $count < $this->board->getSizeY(); $count++) {
@@ -103,14 +104,34 @@ class DetectWin implements DetectWinInterface {
         if ($matchCount >= $winCount)
             return true;
 
+        //DIAGONAL WIN CHECK LEFT
+        $matchCount = 0; //Reset match count.
+
+        for ($count = 0; $count < $winCount && $x + $count < $this->board->getSizeX() && $y - $count >= 0; $count++) {
+            if ($this->pieceCheck($this->board->getSpace($x + $count, $y - $count), $pieceColour)) {
+                $matchCount++;
+            }
+            else
+                break;
+        }
+
+        for ($count = 0; $count < $winCount && $x - $count >= 0 && $y + $count < $this->board->getSizeY(); $count++) {
+            if ($this->pieceCheck($this->board->getSpace($x - $count, $y + $count), $pieceColour)) {
+                $matchCount++;
+            }
+            else
+                break;
+        }
+
         return false;
     }
 
     //Takes a piece and a colour and checks if the colour of the piece matches the colour. Note, the "?Piece" means that the argument can either be an object or "NULL".
     protected function pieceCheck(?Piece $pieceToCheck, int $pieceColour): bool {
         //Make sure we are not checking an empty space.
-        if ($pieceToCheck == NULL)
+        if ($pieceToCheck == NULL) {
             return false;
+        }
 
         //We check if the current piece has the same colour as the base piece.
         if ($pieceToCheck->getColourInt() == $pieceColour)

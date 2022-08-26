@@ -47,6 +47,7 @@ class Board implements BoardInterface {
         for ($y = 0; $y < $this->ySize; $y++) {
             if ($this->board[$xPos][$y] == NULL) {
                 $this->board[$xPos][$y] = $piece;
+
                 return true;
             }
         }
@@ -80,5 +81,24 @@ class Board implements BoardInterface {
     public function getSizeY(): int {
         return $this->ySize;
     }
+
+    /*public function printBoard() {
+        for ($y = --$this->ySize; $y >= 0; $y--) { 
+            for ($x = 0; $x < $this->xSize; $x++) { 
+                if ($this->board[$x][$y] == NULL) {
+                    echo "NUL";
+                }
+                else if ($this->board[$x][$y]->getColourInt() == 0) {
+                    echo "RED";
+                }
+                else {
+                    echo "BLU";
+                }
+
+                echo "  ";
+            }
+            echo "\n";
+        }
+    }*/
 }
 ?>
