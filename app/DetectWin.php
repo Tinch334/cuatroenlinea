@@ -11,17 +11,13 @@ interface DetectWinInterface {
 
 
 class DetectWin implements DetectWinInterface {
-    protected int $xSize;
-    protected int $ySize;
     protected Board $board;
 
     public function detectWin(Board $board): ?Piece {
-        $this->xSize = $board->getSizeX();
-        $this->ySize = $board->getSizeY();
         $this->board = $board;
 
-        for ($x = 0; $x < $this->xSize; $x++) { 
-            for ($y = 0; $y < $this->ySize; $y++) { 
+        for ($x = 0; $x < $this->board->getSizeX(); $x++) { 
+            for ($y = 0; $y < $this->board->getSizeY(); $y++) { 
                 //We check to see if the space is not empty.
                 if ($this->board->getSpace($x, $y) != NULL) {
                     //If there's been a win we return true, otherwise we keep checking.
@@ -45,7 +41,7 @@ class DetectWin implements DetectWinInterface {
         //HORIZONTAL WIN CHECK
         //The min check is done to prevent going outside of the boards bounds.
         //The "break" is in place to avoid a situation where we count disconnected pieces. For example without the break, the line "BBRB" would count 3 pieces, when there are only to connected.
-        for ($xCount = $x; $xCount < min($x + 3, $this->xSize); $xCount++) { 
+        for ($xCount = $x; $xCount < min($x + ($winCount - 1), $this->board->getSizeX()); $xCount++) { 
             if ($this->pieceCheck($this->board->getSpace($xCount, $y), $pieceColour))
                 $matchCount++;
             else
@@ -53,7 +49,7 @@ class DetectWin implements DetectWinInterface {
         }
 
         //If we didn't find a match to the right we try to the left.
-        for ($xCount = $x; $xCount > max($x - 3, 0); $xCount--) { 
+        for ($xCount = $x; $xCount > max($x - ($winCount - 1), 0); $xCount--) { 
             if ($this->pieceCheck($this->board->getSpace($xCount, $y), $pieceColour))
                 $matchCount++;
             else
@@ -67,7 +63,7 @@ class DetectWin implements DetectWinInterface {
         //Uses the same logic as the horizontal win check.
         $matchCount = 0; //Reset match count.
 
-        for ($yCount = $y; $yCount < min($y + 3, $this->ySize); $yCount++) { 
+        for ($yCount = $y; $yCount < min($y + ($winCount - 1), $this->board->getSizeY()); $yCount++) { 
             if ($this->pieceCheck($this->board->getSpace($x, $yCount), $pieceColour))
                 $matchCount++;
             else
@@ -75,9 +71,31 @@ class DetectWin implements DetectWinInterface {
         }
         
         //If we didn't find a match to the right we try to the left.
-        for ($yCount = $y; $yCount > max($y - 3, 0); $yCount--) { 
+        for ($yCount = $y; $yCount > max($y - ($winCount - 1), 0); $yCount--) { 
             if ($this->pieceCheck($this->board->getSpace($x, $yCount), $pieceColour))
                 $matchCount++;
+            else
+                break;
+        }
+
+        if ($matchCount >= $winCount)
+            return true;
+
+        //DIAGONAL WIN CHECK
+        $matchCount = 0; //Reset match count.
+
+        for ($count = 0; $count < $winCount && $x + $count < $this->board->getSizeX() && $y + $count < $this->board->getSizeY(); $count++) {
+            if ($this->pieceCheck($this->board->getSpace($x + $count, $y + $count), $pieceColour)) {
+                $matchCount++;
+            }
+            else
+                break;
+        }
+
+        for ($count = 0; $count < $winCount && $x - $count >= 0 && $y - $count >= 0; $count++) {
+            if ($this->pieceCheck($this->board->getSpace($x - $count, $y - $count), $pieceColour)) {
+                $matchCount++;
+            }
             else
                 break;
         }
