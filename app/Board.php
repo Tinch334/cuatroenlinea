@@ -23,11 +23,11 @@ class Board implements BoardInterface {
 
     //The constructor uses the predetermined board size by default.
     function __construct(int $xSize = 7, int $ySize = 6) {
-        if ($xSize < 0) {
+        if ($xSize < 1) {
             throw new \Exception("Invalid size used for board width, with value: ".$xSize);
             $this->xSize = 7; //In case of an exception we default to the predetermined board size.
         }
-        if ($ySize < 0) {
+        if ($ySize < 1) {
             throw new \Exception("Invalid size used for board height, with value: ".$ySize);
             $this->xSize = 6; //In case of an exception we default to the predetermined board size.
         }

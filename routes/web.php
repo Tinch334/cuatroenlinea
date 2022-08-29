@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Board;
+use App\Piece;
+use App\Game;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
 
 Route::get('/jugar/{secuencia}', function ($secuencia) {
   $secuencia_anterior = $secuencia;
