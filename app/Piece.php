@@ -7,7 +7,7 @@ use App\DetectWin;
 
 interface PieceInterface {
     public function getColourInt(): int;
-    public function getColourHex(): number;
+    public function getColourHex(): int;
 }
 
 
@@ -31,14 +31,12 @@ class Piece implements PieceInterface {
         return $this->colour;
     }
 
-    public function getColourHex(): number {
-        if ($this->colour == 0) {
-            return $this->redColour; //Red colour
-        }
+    public function getColourHex(): int {
+        if ($this->colour == 0)
+            return $this->redColour; //Red colour.
         //We don't need to check with an "else if" because the constructor only allows for red or blue.
-        else {
-            return $this->blueColour; //Blue colour
-        }
+        else
+            return $this->blueColour; //Blue colour.
     }
 }
 
