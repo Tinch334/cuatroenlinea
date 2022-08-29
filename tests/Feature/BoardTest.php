@@ -53,6 +53,9 @@ class BoardTest extends TestCase
      * @return void
      */
     public function test_invalid_board() {
+        //We 
+        $this->expectNotToPerformAssertions();
+
         //We generate five random invalid boards.
         for ($i = 0; $i < 5; $i++) {
             $width = rand(-10, 0);
