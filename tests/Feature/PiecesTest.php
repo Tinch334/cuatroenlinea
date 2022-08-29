@@ -1,18 +1,20 @@
 <?php
-
 namespace Tests\Feature;
+namespace App;
+
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+
 class PiecesTest extends TestCase
 {
     /**
-     * Checks the amount of pieces given 4 pieces in the first column. Succeeds
+     * Generates pieces and checks their colours.
      *
      * @return void
      */
-    public function test_piece_count() {
+    public function test_piece_colour() {
         
     }
 
