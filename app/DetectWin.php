@@ -69,8 +69,11 @@ class DetectWin implements DetectWinInterface {
             }
 
             //If we reach the win count we return the wining piece
-            if ($count == $colourCount)
+            if ($count == $colourCount) {
+                echo "\n\n";
+                echo "Axis: ".$axis." - fixedAxis: ".$fixedAxis."\n";
                 return $piece;
+            }
         }
 
         return NULL;
