@@ -40,8 +40,8 @@ class WinDetectionTest extends TestCase
         $countStart = rand(0, $width - 3);
         $piece = new Piece(1, -1, -1);
 
-        //We create "$width - 1 - $x" horizontal consecutive pieces starting at "$countStart".
-        for ($x = $countStart; $x < $width; $x++) { 
+        //We create "$countStart + 4" horizontal consecutive pieces starting at "$countStart".
+        for ($x = $countStart; $x < $countStart + 4; $x++) { 
             $board->throwPiece($piece, $x);
         }
 
@@ -100,5 +100,24 @@ class WinDetectionTest extends TestCase
 
         //Since there's a winning move a piece should be returned, no "NULL".
         $this->assertNotNull($detectWin->detectWin($board));
+    }
+
+
+    //Allows for the easy creation of a board with a specific piece arrangement.
+    protected function _makeBoard($array): Board {
+        $width = count($array[0]);
+        $height = count($array);
+
+        $board = new Board($width, $height);
+
+        for ($x = $width - 1; $x >= 0; $x--) { 
+            for ($y = 0; $y < $height; $y++) {
+                //We can't use "$array[$y][$x] != NULL" because PHP interprets zero as NULL.
+                if (!is_null($array[$y][$x]))
+                    $board->throwPiece(new Piece($array[$y][$x], -1, -1), $x);
+            }
+        }
+
+        return $board;
     }
 }

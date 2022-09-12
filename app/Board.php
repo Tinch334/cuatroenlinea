@@ -82,7 +82,7 @@ class Board implements BoardInterface {
         return $this->ySize;
     }
 
-    /*public function printBoard() {
+    public function printBoard() {
         for ($y = --$this->ySize; $y >= 0; $y--) { 
             for ($x = 0; $x < $this->xSize; $x++) { 
                 if ($this->board[$x][$y] == NULL) {
@@ -99,6 +99,6 @@ class Board implements BoardInterface {
             }
             echo "\n";
         }
-    }*/
+    }
 }
 ?>

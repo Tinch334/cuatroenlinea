@@ -57,6 +57,7 @@ class DetectWin implements DetectWinInterface {
                 //If we have no "currentColour" we set it to the current piece.
                 if ($currentColour == NULL) {
                     $currentColour = $piece->getColourInt();
+                    $colourCount++;
                 }
                 else if ($currentColour == $piece->getColourInt()) {
                     $colourCount++;
@@ -73,6 +74,10 @@ class DetectWin implements DetectWinInterface {
         }
 
         return NULL;
+    }
+
+    protected function diagonalCheck(Board $board, bool $direction, int $count) {
+
     }
 }
 
