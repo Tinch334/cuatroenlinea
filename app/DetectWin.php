@@ -74,20 +74,6 @@ class DetectWin implements DetectWinInterface {
 
         return NULL;
     }
-
-    //Takes a piece and a colour and checks if the colour of the piece matches the colour. Note, the "?Piece" means that the argument can either be an object or "NULL".
-    protected function pieceCheck(?Piece $pieceToCheck, int $pieceColour): bool {
-        //Make sure we are not checking an empty space.
-        if ($pieceToCheck == NULL) {
-            return false;
-        }
-
-        //We check if the current piece has the same colour as the base piece.
-        if ($pieceToCheck->getColourInt() == $pieceColour)
-            return true;
-        else
-            return false;
-    }
 }
 
 ?>
