@@ -23,14 +23,16 @@ class DetectWin implements DetectWinInterface {
         //Horizontal win detection.
         for ($y = 0; $y < $boardY; $y++) { 
             $result = $this->lineCheck($board, false, $boardX, $y);
-            if ($result != NULL)
+            if ($result !== NULL) {
+                echo "Return time\n\n";
                 return $result;
+            }
         }
 
         //Vertical win detection.
         for ($x = 0; $x < $boardX; $x++) { 
             $result = $this->lineCheck($board, true, $boardY, $x);
-            if ($result != NULL)
+            if ($result !== NULL)
                 return $result;
         }
 
@@ -49,31 +51,31 @@ class DetectWin implements DetectWinInterface {
             $piece = ($axis == false) ? $board->getSpace($i, $fixedAxis) : $board->getSpace($fixedAxis, $i);
 
             //If we reach an empty space we reset the current colour and the colour count.
-            if ($piece == NULL) {
+            if ($piece === NULL) {
                 $currentColour = NULL;
                 $colourCount = 0;
             }
             else {
                 //If we have no "currentColour" we set it to the current piece.
-                if ($currentColour == NULL) {
+                if ($currentColour === NULL) {
                     $currentColour = $piece->getColourInt();
                     $colourCount++;
                 }
-                else if ($currentColour == $piece->getColourInt()) {
-                    $colourCount++;
-                }
-                //If the pieces have a different colour reset the counter.
                 else {
-                    $colourCount = 0;
+                    if ($currentColour == $piece->getColourInt()) {
+                        $colourCount++;
+                    }
+                    //If the pieces have a different colour reset the counter.
+                    else {
+                        $colourCount = 0;
+                    }
                 }
+                
             }
 
             //If we reach the win count we return the wining piece
-            if ($count == $colourCount) {
-                echo "\n\n";
-                echo "Axis: ".$axis." - fixedAxis: ".$fixedAxis."\n";
+            if ($count == $colourCount)
                 return $piece;
-            }
         }
 
         return NULL;

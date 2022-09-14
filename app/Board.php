@@ -45,7 +45,7 @@ class Board implements BoardInterface {
 
         //Add piece to the end of the corresponding column, by checking upwards until we find an empty space.
         for ($y = 0; $y < $this->ySize; $y++) {
-            if ($this->board[$xPos][$y] == NULL) {
+            if ($this->board[$xPos][$y] === NULL) {
                 $this->board[$xPos][$y] = $piece;
 
                 return true;
@@ -82,7 +82,7 @@ class Board implements BoardInterface {
         return $this->ySize;
     }
 
-    public function printBoard() {
+    /*public function _printBoard() {
         for ($y = --$this->ySize; $y >= 0; $y--) { 
             for ($x = 0; $x < $this->xSize; $x++) { 
                 if ($this->board[$x][$y] == NULL) {
@@ -99,6 +99,6 @@ class Board implements BoardInterface {
             }
             echo "\n";
         }
-    }
+    }*/
 }
 ?>
