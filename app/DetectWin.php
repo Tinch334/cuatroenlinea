@@ -12,132 +12,77 @@ interface DetectWinInterface {
 
 class DetectWin implements DetectWinInterface {
     protected Board $board;
+    protected int $boardX;
+    protected int $boardY;
 
     public function detectWin(Board $board): ?Piece {
         $this->board = $board;
+        $boardX = $board->getSizeX();
+        $boardY = $board->getSizeY();
 
-        for ($x = 0; $x < $this->board->getSizeX(); $x++) { 
-            for ($y = 0; $y < $this->board->getSizeY(); $y++) { 
-                //We check to see if the space is not empty.
-                if ($this->board->getSpace($x, $y) != NULL) {
-                    //If there's been a win we return true, otherwise we keep checking.
-                    if ($this->detectWinFromPiece($x, $y, 4)) {
-                        //If we win we return the winning piece to be able to get the colour that won.
-                        return $this->board->getSpace($x, $y);
-                    }
-                }
+        //Horizontal win detection.
+        for ($y = 0; $y < $boardY; $y++) { 
+            $result = $this->lineCheck($board, false, $boardX, $y);
+            if ($result !== NULL) {
+                echo "Return time\n\n";
+                return $result;
             }
+        }
+
+        //Vertical win detection.
+        for ($x = 0; $x < $boardX; $x++) { 
+            $result = $this->lineCheck($board, true, $boardY, $x);
+            if ($result !== NULL)
+                return $result;
         }
 
         //If no winning piece was found we return false.
         return NULL;
     }
 
-    //Check for winning with a "base" piece. The "winCount" variable is to allow to easily change the amount of pieces in a row required to win. 
-    protected function detectWinFromPiece(int $x, int $y, int $winCount): bool {
-        $matchCount = 0;
-        $pieceColour = $this->board->getSpace($x, $y)->getColourInt();
+    
+    //Checks for a win in a line either horizontal or vertical. If "axis" is false checks horizontally otherwise vertically.
+    protected function lineCheck(Board $board, bool $axis, int $limit, int $fixedAxis, int $count = 4): ?Piece {
+        $currentColour = NULL;
+        $colourCount = 0;
 
-        //HORIZONTAL WIN CHECK
-        //The min check is done to prevent going outside of the boards bounds.
-        //The "break" is in place to avoid a situation where we count disconnected pieces. For example without the break, the line "BBRB" would count 3 pieces, when there are only to connected.
-        for ($xCount = $x; $xCount < min($x + ($winCount - 1), $this->board->getSizeX()); $xCount++) { 
-            if ($this->pieceCheck($this->board->getSpace($xCount, $y), $pieceColour))
-                $matchCount++;
-            else
-                break;
-        }
+        for ($i = 0; $i < $limit; $i++) {
+            //We use the counter to get a horizontal or vertical piece depending on "axis".
+            $piece = ($axis == false) ? $board->getSpace($i, $fixedAxis) : $board->getSpace($fixedAxis, $i);
 
-        //If we didn't find a match to the right we try to the left.
-        for ($xCount = $x; $xCount > max($x - ($winCount - 1), 0); $xCount--) { 
-            if ($this->pieceCheck($this->board->getSpace($xCount, $y), $pieceColour))
-                $matchCount++;
-            else
-                break;
-        }
-
-        if ($matchCount >= $winCount)
-            return true;
-
-        //VERTICAL WIN CHECK
-        //Uses the same logic as the horizontal win check.
-        $matchCount = 0; //Reset match count.
-
-        for ($yCount = $y; $yCount < min($y + ($winCount - 1), $this->board->getSizeY()); $yCount++) {
-            if ($this->pieceCheck($this->board->getSpace($x, $yCount), $pieceColour))
-                $matchCount++;
-            else
-                break;
-        }
-        
-        //If we didn't find a match to the right we try to the left.
-        for ($yCount = $y; $yCount > max($y - ($winCount - 1), 0); $yCount--) { 
-            if ($this->pieceCheck($this->board->getSpace($x, $yCount), $pieceColour))
-                $matchCount++;
-            else
-                break;
-        }
-
-        if ($matchCount >= $winCount) {
-            return true;
-        }
-
-        //DIAGONAL WIN CHECK RIGHT
-        $matchCount = 0; //Reset match count.
-
-        for ($count = 0; $count < $winCount && $x + $count < $this->board->getSizeX() && $y + $count < $this->board->getSizeY(); $count++) {
-            if ($this->pieceCheck($this->board->getSpace($x + $count, $y + $count), $pieceColour)) {
-                $matchCount++;
+            //If we reach an empty space we reset the current colour and the colour count.
+            if ($piece === NULL) {
+                $currentColour = NULL;
+                $colourCount = 0;
             }
-            else
-                break;
-        }
-
-        for ($count = 0; $count < $winCount && $x - $count >= 0 && $y - $count >= 0; $count++) {
-            if ($this->pieceCheck($this->board->getSpace($x - $count, $y - $count), $pieceColour)) {
-                $matchCount++;
+            else {
+                //If we have no "currentColour" we set it to the current piece.
+                if ($currentColour === NULL) {
+                    $currentColour = $piece->getColourInt();
+                    $colourCount++;
+                }
+                else {
+                    if ($currentColour == $piece->getColourInt()) {
+                        $colourCount++;
+                    }
+                    //If the pieces have a different colour reset the counter.
+                    else {
+                        $colourCount = 0;
+                    }
+                }
+                
             }
-            else
-                break;
+
+            //If we reach the win count we return the wining piece
+            if ($count == $colourCount)
+                return $piece;
         }
 
-        if ($matchCount >= $winCount)
-            return true;
-
-        //DIAGONAL WIN CHECK LEFT
-        $matchCount = 0; //Reset match count.
-
-        for ($count = 0; $count < $winCount && $x + $count < $this->board->getSizeX() && $y - $count >= 0; $count++) {
-            if ($this->pieceCheck($this->board->getSpace($x + $count, $y - $count), $pieceColour)) {
-                $matchCount++;
-            }
-            else
-                break;
-        }
-
-        for ($count = 0; $count < $winCount && $x - $count >= 0 && $y + $count < $this->board->getSizeY(); $count++) {
-            if ($this->pieceCheck($this->board->getSpace($x - $count, $y + $count), $pieceColour)) {
-                $matchCount++;
-            }
-            else
-                break;
-        }
-
-        return false;
+        return NULL;
     }
 
-    //Takes a piece and a colour and checks if the colour of the piece matches the colour. Note, the "?Piece" means that the argument can either be an object or "NULL".
-    protected function pieceCheck(?Piece $pieceToCheck, int $pieceColour): bool {
-        //Make sure we are not checking an empty space.
-        if ($pieceToCheck == NULL) {
-            return false;
-        }
+    protected function diagonalCheck(Board $board, bool $direction, int $count) {
 
-        //We check if the current piece has the same colour as the base piece.
-        if ($pieceToCheck->getColourInt() == $pieceColour)
-            return true;
-        else
-            return false;
     }
 }
 

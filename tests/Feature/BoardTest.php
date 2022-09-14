@@ -1,5 +1,4 @@
 <?php
-
 namespace Tests\Feature;
 namespace App;
 
@@ -33,11 +32,29 @@ class BoardTest extends TestCase
     }
 
     /**
+     * Checks the size of random boards.
+     *
+     * @return void
+     */
+    public function test_correct_size() {
+        for ($i = 0; $i < 5; $i++) {
+            $width = rand(1, 50);
+            $height = rand(1, 50);
+            $board = new Board($width, $height);
+
+            $this->assertEquals($board->getSizeX(), $width);
+            $this->assertEquals($board->getSizeY(), $height);
+        }
+    }
+
+    /**
      * Checks that boards with an invalid size throw an exception.
      *
      * @return void
      */
     public function test_invalid_board() {
+        $this->expectNotToPerformAssertions();
+
         //We generate five random invalid boards.
         for ($i = 0; $i < 5; $i++) {
             $width = rand(-10, 0);
@@ -57,7 +74,7 @@ class BoardTest extends TestCase
     }
 
     /**
-     * Checks that boards with an invalid size throw an exception.
+     * Checks if a board gets successfully filled.
      *
      * @return void
      */

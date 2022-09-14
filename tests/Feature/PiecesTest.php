@@ -1,27 +1,33 @@
 <?php
-
 namespace Tests\Feature;
+namespace App;
+
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+
 class PiecesTest extends TestCase
 {
     /**
-     * Checks the amount of pieces given 4 pieces in the first column. Succeeds
+     * Generates pieces and checks their colours.
      *
      * @return void
      */
-    public function test_piece_count() {
-        
-    }
+    public function test_piece_colour() {
+        $red = 0xdb0909;
+        $blue = 0x132af2;
 
-    /**
-     * Checks the amount of empty spaces given 7 pieces, one in each column. Succeeds
-     *
-     * @return void
-     */
-    public function test_empty_spaces_count() {
-        
+        for ($i = 0; $i < 10; $i++) { 
+            $colour = rand(0, 1);
+            $piece = new Piece($colour, $red, $blue);
+
+            $this->assertEquals($piece->getColourInt(), $colour);
+
+            if ($colour == 0)
+                $this->assertEquals($piece->getColourHex(), $red);
+            else
+                $this->assertEquals($piece->getColourHex(), $blue);
+        }
     }
 }
