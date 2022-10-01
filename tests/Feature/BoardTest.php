@@ -60,7 +60,7 @@ class BoardTest extends TestCase
             $width = rand(-10, 0);
             $height = rand(-10, 0);
 
-            //All these boards should throw an exception since they have invalid dimensions
+            //All these boards should throw an exception since they have invalid dimensions.
             try {
                 $board = new Board($width, $height);
             }
@@ -101,5 +101,63 @@ class BoardTest extends TestCase
 
         //There should be zero empty spaces.
         $this->assertEquals($emptyCount, 0);
+    }
+
+    /**
+     * Checks that invalid drops generate an exception.
+     *
+     * @return void
+     */
+    public function test_invalid_drop() {
+        $this->expectNotToPerformAssertions();
+
+        //We generate five random invalid boards.
+        for ($i = 0; $i < 5; $i++) {
+            $width = rand(5, 10);
+            $height = rand(5, 10);
+            $board = new Board($width, $height);
+
+            //All these boards should throw an exception since they are throwing a piece in an invalid position.
+            try {
+                $board->throwPiece(new Piece(rand(1, 2), -1, -1), $width + 1);
+            }
+            catch (\Exception $e) {
+                //When we catch an exception we continue, avoiding the "fail" call.
+                continue;
+            }
+
+            $this->fail("Allowed invalid drop in non existent column ".$width + 1);
+        }
+    }
+
+    /**
+     * Checks that getting an invalid space generates an exception.
+     *
+     * @return void
+     */
+    public function test_invalid_get() {
+        $this->expectNotToPerformAssertions();
+
+        //We generate five random invalid boards.
+        for ($i = 0; $i < 5; $i++) {
+            $width = rand(5, 10);
+            $height = rand(5, 10);
+            $board = new Board($width, $height);
+
+            //All these boards should throw an exception since they are checking a piece in an invalid position.
+            try {
+                //Used to alternate between horizontal and vertical invalid checking.
+                if (rand(1, 2) == 1)
+                    $board->getSpace($width + 1, $height);
+                else
+                    $board->getSpace($width, $height + 1);
+            }
+            catch (\Exception $e) {
+                //When we catch an exception we continue, avoiding the "fail" call.
+                continue;
+            }
+
+            $this->fail("Allowed checking of an invalid board space with coordinates X: ".($width + 1)." - Y: ".($height + 1));
+        }
     }
 }

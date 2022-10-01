@@ -19,10 +19,13 @@ class DetectWin implements DetectWinInterface {
         $this->board = $board;
         $this->boardX = $board->getSizeX();
         $this->boardY = $board->getSizeY();
+        $winCount = 4;
+
+        echo "CAlled func\n";
 
         //Horizontal win detection.
         for ($y = 0; $y < $this->boardY; $y++) { 
-            $result = $this->lineCheck($board, false, $this->boardX, $y);
+            $result = $this->lineCheck($board, false, $this->boardX, $y, $winCount);
             if ($result !== NULL) {
                 return $result;
             }
@@ -30,9 +33,23 @@ class DetectWin implements DetectWinInterface {
 
         //Vertical win detection.
         for ($x = 0; $x < $this->boardX; $x++) { 
-            $result = $this->lineCheck($board, true, $this->boardY, $x);
+            $result = $this->lineCheck($board, true, $this->boardY, $x, $winCount);
             if ($result !== NULL)
                 return $result;
+        }
+
+        //Diagonal win detection
+        for ($x = 0; $x < $this->boardX - $winCount; $x++) {
+            for ($y = $winCount - 1; $y < $this->boardY; $y++) {
+                //We check both diagonals, going from top to bottom and from bottom to top.
+                $resultUp = $this->diagonalCheck($board, false, $x, $y, $winCount);
+                $resultDown = $this->diagonalCheck($board, true, $x, $y, $winCount);
+
+                if ($resultUp !== NULL)
+                    return $resultUp;
+                else if ($resultDown !== NULL)
+                    return $resultDown;
+            }
         }
 
         //If no winning piece was found we return false.
@@ -58,25 +75,14 @@ class DetectWin implements DetectWinInterface {
     }
 
     //Checks for a win in a diagonal line either bottom to top or top to bottom. If "direction" is false checks it checks bottom to top otherwise top to bottom.
-    /*protected function diagonalCheck(Board $board, bool $direction, int $xOffest, int $yOffset, int $winCount = 4) {
-        //The x condition is checked in the for loops condition, the height condition is checked inside the loop since it depends on the direction
-        for ($count = 0; $count + $xOffest < $this->boardX - ($winCount - 1); $count++) { 
-            //This checks for the y condition depending on the direction.
-            if ($direction === false) {
-                if ($count + yOffset < $this->boardY - $winCount - 1)
-                    break;
-                else
-                    $piece = $board->getSpace($count + $xOffest, $count + $yOffset);
-            }
-            else {
-                if ($this->boardY - $count - $yOffset > $winCount - 1)
-                    break;
-                else
-                    $piece = $board->getSpace($count + $xOffest, $this->boardY - $count - $yOffset);
-            }
+    protected function diagonalCheck(Board $board, bool $direction, int $initialX, int $initialY, int $winCount = 4) {
+        $lineCounter = new LineCounter($winCount);
 
-            //We get the piece using the appropriate offsets.
-            
+        //The ternary operator is used to determine whether "y" should be incremented or decremented, both depending on the direction. The conditions checked in the "for" loop are the upper and lower y bounds of the board as well as the right x bound.
+        for ($y = $initialY, $x = $initialX; $y >= 0 && $y < $this->boardY && $x < $this->boardX; ($direction == false) ? $y++ : $y--, $x++) {
+            //Get corresponding piece.
+            $piece = $board->getSpace($x, $y);
+
             //We send the current piece to the line counter.
             $result = $lineCounter->LineCount($piece);
 
@@ -84,13 +90,14 @@ class DetectWin implements DetectWinInterface {
                 return $result;
         }
 
-        //If no result was found we return NULL.
+        echo "Left\n";
+
         return NULL;
-    }*/
+    }
 }
 
 
-//The reason for creating a class to house the "LineCount" function is to deal with the need to preserve variables between function calls. Particularly "currentColour" and "colourCount", and to avoid passing arguments by reference or doing other "weird" hacks/workarounds.
+//The reason for creating a class to house the "LineCount" function is to deal with the need to preserve variables between function calls. Particularly "currentColour" and "colourCount", and to avoid passing arguments by reference or doing other hacks/workarounds.
 class LineCounter {
     protected ?int $currentColour = NULL;
     protected int $colourCount = 0;

@@ -63,6 +63,7 @@ class Board implements BoardInterface {
 
         //Since the board is cleared on the constructor we won't have uninitialized indexes, therefore we can return safely. 
         return $this->board[$xPos][$yPos];
+
     }
 
     public function clearBoard() {

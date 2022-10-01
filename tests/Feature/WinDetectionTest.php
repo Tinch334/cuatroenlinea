@@ -45,7 +45,7 @@ class WinDetectionTest extends TestCase
             $board->throwPiece($piece, $x);
         }
 
-        //Since there's a winning move a piece should be returned, no "NULL".
+        //Since there's a winning move a piece should be returned, not "NULL".
         $this->assertNotNull($detectWin->detectWin($board));
     }
 
@@ -70,22 +70,22 @@ class WinDetectionTest extends TestCase
             $board->throwPiece($piece, $xPos);
         }
 
-        //Since there's a winning move a piece should be returned, no "NULL".
+        //Since there's a winning move a piece should be returned, not "NULL".
         $this->assertNotNull($detectWin->detectWin($board));
     }
 
     /**
-     * Checks if there is a win on a checkered board.
+     * Checks if there is a win on a board with diagonal lines of the same colour.
      *
      * @return void
      */
-    /*public function test_diagonal_win() {
+    public function test_diagonal_win() {
         $width = rand(10, 50);
         $height = rand(10, 50);
         $board = new Board($width, $height);
         $detectWin = new DetectWin();
 
-        //We fill the board with a checkered pattern, this in diagonals of the same colour.
+        //We fill the board with a diagonal pattern.
         for ($x = 0; $x < $width; $x++) { 
             for ($y = 0; $y < $height; $y++) {
                 //We alternate the colours of the pieces. The check with "$x" is done to prevent equal rows.
@@ -93,13 +93,14 @@ class WinDetectionTest extends TestCase
                     $piece = new Piece(($y % 2 == 0) ? 0 : 1, -1, -1);
                 else
                     $piece = new Piece(($y % 2 == 0) ? 1 : 0, -1, -1);
+
                 $board->throwPiece($piece, $x);
             }
         }
 
-        //Since there's a winning move a piece should be returned, no "NULL".
+        //Since there's a winning move a piece should be returned, not "NULL".
         $this->assertNotNull($detectWin->detectWin($board));
-    }*/
+    }
 
 
     /**
@@ -120,7 +121,7 @@ class WinDetectionTest extends TestCase
         $board = $this->_makeBoard($array);
         $detectWin = new DetectWin();
 
-        //Since there's a winning move a piece should be returned, no "NULL".
+        //Since there's a winning move a piece should be returned, not "NULL".
         $this->assertNotNull($detectWin->detectWin($board));
     }
 
@@ -164,7 +165,7 @@ class WinDetectionTest extends TestCase
         $board = $this->_makeBoard($array);
         $detectWin = new DetectWin();
 
-        //Since there's a winning move a piece should be returned, no "NULL".
+        //Since there's a winning move a piece should be returned, not "NULL".
         $this->assertNotNull($detectWin->detectWin($board));
     }
 
@@ -190,6 +191,50 @@ class WinDetectionTest extends TestCase
         $this->assertNull($detectWin->detectWin($board));
     }
 
+    /**
+     * Checks if there is a diagonal win on a specific board.
+     *
+     * @return void
+     */
+    public function test_diagonal_specific_success() {
+        $array = array(
+            array(NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+            array(1,    NULL, NULL, NULL, NULL, NULL, NULL),
+            array(0,    1,    1,    NULL, NULL, 1,    NULL),
+            array(1,    0,    1,    0,    NULL, 0,    NULL),
+            array(0,    1,    1,    1,    NULL, 1,    NULL),
+            array(0,    1,    0,    1,    0,    0,    NULL)
+        );
+
+        $board = $this->_makeBoard($array);
+        $detectWin = new DetectWin();
+
+        echo "Diagonal check\n";
+        //Since there's a winning move a piece should be returned, not "NULL".
+        $this->assertNotNull($detectWin->detectWin($board));
+    }
+
+    /**
+     * Checks if there is not a diagonal win on a specific board.
+     *
+     * @return void
+     */
+    public function test_diagonal_specific_failure() {
+        $array = array(
+            array(NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+            array(1,    NULL, NULL, NULL, NULL, NULL, NULL),
+            array(0,    1,    1,    NULL, NULL, 1,    NULL),
+            array(1,    1,    0,    0,    NULL, 0,    NULL),
+            array(0,    0,    1,    1,    0,    1,    NULL),
+            array(0,    1,    0,    1,    1,    0,    NULL)
+        );
+
+        $board = $this->_makeBoard($array);
+        $detectWin = new DetectWin();
+
+        //There are no winning moves on the board, therefore no piece should be returned.
+        $this->assertNull($detectWin->detectWin($board));
+    }
 
     //Allows for the easy creation of a board with a specific piece arrangement.
     protected function _makeBoard($array): Board {
